@@ -27,7 +27,7 @@ export default function LoginPage() {
           </Link>
           <div className="space-y-4">
             <input
-              placeholder="Email"
+              placeholder="Username"
               className="w-full px-4 py-3 rounded-lg bg-white/20 text-white placeholder-white/60 outline-none focus:ring-2 focus:ring-cyan-400"
             />
             <div className="relative">

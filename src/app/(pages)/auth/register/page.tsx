@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Cloud, User, Mail, Lock } from 'lucide-react';
+import { Cloud, User, Mail, Lock, UserRoundPlus } from 'lucide-react';
 import Link from 'next/link';
 
 const container = {
@@ -53,6 +53,16 @@ export default function RegisterPage() {
               <User className="absolute left-3 top-3 text-white/60" size={18} />
               <input
                 placeholder="Full name"
+                className="w-full pl-10 pr-4 py-3 rounded-lg bg-white/20 text-white placeholder-white/60 outline-none focus:ring-2 focus:ring-cyan-400"
+              />
+            </motion.div>
+            <motion.div variants={item} className="relative">
+              <UserRoundPlus
+                className="absolute left-3 top-3 text-white/60"
+                size={18}
+              />
+              <input
+                placeholder="Username"
                 className="w-full pl-10 pr-4 py-3 rounded-lg bg-white/20 text-white placeholder-white/60 outline-none focus:ring-2 focus:ring-cyan-400"
               />
             </motion.div>
