@@ -1,8 +1,9 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Cloud, Lock } from 'lucide-react';
+import { Cloud } from 'lucide-react';
 import Link from 'next/link';
+import { FormLogin } from './FormLogin';
 
 export default function LoginPage() {
   return (
@@ -25,31 +26,9 @@ export default function LoginPage() {
               <p className="text-sm text-cyan-200">Secure Cloud File Storage</p>
             </div>
           </Link>
-          <div className="space-y-4">
-            <input
-              placeholder="Username"
-              className="w-full px-4 py-3 rounded-lg bg-white/20 text-white placeholder-white/60 outline-none focus:ring-2 focus:ring-cyan-400"
-            />
-            <div className="relative">
-              <input
-                type="password"
-                placeholder="Password"
-                className="w-full px-4 py-3 rounded-lg bg-white/20 text-white placeholder-white/60 outline-none focus:ring-2 focus:ring-cyan-400"
-              />
-              <Lock
-                className="absolute right-3 top-3 text-white/60"
-                size={18}
-              />
-            </div>
 
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.97 }}
-              className="w-full py-3 rounded-lg bg-gradient-to-r from-cyan-400 to-blue-500 text-black font-semibold shadow-lg"
-            >
-              Login
-            </motion.button>
-          </div>
+          {/* Form Login */}
+          <FormLogin />
 
           <p className="text-center text-sm text-white/70 mt-6">
             New here?{' '}

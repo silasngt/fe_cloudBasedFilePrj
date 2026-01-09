@@ -1,8 +1,7 @@
 'use client';
-
 import Link from 'next/link';
 import { Cloud, Folder, User, Settings, Trash2, LogOut } from 'lucide-react';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 
 const menus = [
   { label: 'Quản lý file', href: '/dashboard', icon: Folder },
@@ -13,6 +12,32 @@ const menus = [
 
 export default function Sidebar() {
   const pathname = usePathname();
+  const route = useRouter();
+
+  const handleLogout = (linkRedirect: string) => {
+    const refreshToken = cookieStore.get('refresh_token');
+
+    if (!refreshToken) {
+      console.error('Không tìm thấy refresh token');
+      return;
+    }
+
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/logout`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include',
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        if (res.success === true) {
+          cookieStore.delete('access_token');
+          cookieStore.delete('refresh_token');
+          route.push(linkRedirect);
+        }
+      });
+  };
 
   return (
     <>
@@ -34,7 +59,10 @@ export default function Sidebar() {
             <p className="font-semibold leading-tight">Thành Tài</p>
             <p className="text-xs text-white/60">user@email.com</p>
           </div>
-          <button className="hover:text-red-400">
+          <button
+            onClick={() => handleLogout('/auth/login')}
+            className="hover:text-red-400"
+          >
             <LogOut size={18} />
           </button>
         </div>

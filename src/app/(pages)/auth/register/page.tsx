@@ -1,8 +1,8 @@
 'use client';
-
 import { motion } from 'framer-motion';
 import { Cloud, User, Mail, Lock, UserRoundPlus } from 'lucide-react';
 import Link from 'next/link';
+import { FormRegister } from './FormRegister';
 
 const container = {
   hidden: { opacity: 0 },
@@ -48,62 +48,7 @@ export default function RegisterPage() {
             </motion.div>
           </Link>
           {/* Form */}
-          <motion.form variants={container} className="space-y-4">
-            <motion.div variants={item} className="relative">
-              <User className="absolute left-3 top-3 text-white/60" size={18} />
-              <input
-                placeholder="Full name"
-                className="w-full pl-10 pr-4 py-3 rounded-lg bg-white/20 text-white placeholder-white/60 outline-none focus:ring-2 focus:ring-cyan-400"
-              />
-            </motion.div>
-            <motion.div variants={item} className="relative">
-              <UserRoundPlus
-                className="absolute left-3 top-3 text-white/60"
-                size={18}
-              />
-              <input
-                placeholder="Username"
-                className="w-full pl-10 pr-4 py-3 rounded-lg bg-white/20 text-white placeholder-white/60 outline-none focus:ring-2 focus:ring-cyan-400"
-              />
-            </motion.div>
-
-            <motion.div variants={item} className="relative">
-              <Mail className="absolute left-3 top-3 text-white/60" size={18} />
-              <input
-                type="email"
-                placeholder="Email"
-                className="w-full pl-10 pr-4 py-3 rounded-lg bg-white/20 text-white placeholder-white/60 outline-none focus:ring-2 focus:ring-cyan-400"
-              />
-            </motion.div>
-
-            <motion.div variants={item} className="relative">
-              <Lock className="absolute left-3 top-3 text-white/60" size={18} />
-              <input
-                type="password"
-                placeholder="Password"
-                className="w-full pl-10 pr-4 py-3 rounded-lg bg-white/20 text-white placeholder-white/60 outline-none focus:ring-2 focus:ring-cyan-400"
-              />
-            </motion.div>
-
-            <motion.div variants={item} className="relative">
-              <Lock className="absolute left-3 top-3 text-white/60" size={18} />
-              <input
-                type="password"
-                placeholder="Confirm password"
-                className="w-full pl-10 pr-4 py-3 rounded-lg bg-white/20 text-white placeholder-white/60 outline-none focus:ring-2 focus:ring-cyan-400"
-              />
-            </motion.div>
-
-            <motion.button
-              variants={item}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.97 }}
-              className="w-full py-3 rounded-lg bg-gradient-to-r from-cyan-400 to-blue-500 text-black font-semibold shadow-lg"
-            >
-              Create Account
-            </motion.button>
-          </motion.form>
-
+          <FormRegister />
           <motion.p
             variants={item}
             className="text-center text-sm text-white/70 mt-6"
