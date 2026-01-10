@@ -1,6 +1,5 @@
-import { on } from 'events';
-import Link from 'next/link';
-import { Toaster, toast } from 'sonner';
+import { Trash2 } from 'lucide-react';
+import { toast } from 'sonner';
 export const DeleteButton = (props: {
   api: string;
   id: string;
@@ -15,13 +14,13 @@ export const DeleteButton = (props: {
         credentials: 'include',
       })
         .then((res) => res.json())
-        .then((data) => {
-          if (data.success === true) {
-            toast.success(data.message);
+        .then((res) => {
+          if (res.success === true) {
+            toast.success(res.message);
             onDeleteSuccess(id);
           }
-          if (data.success === false) {
-            toast.error(data.message);
+          if (res.success === false) {
+            toast.error(res.message);
           }
         });
     }
@@ -34,6 +33,41 @@ export const DeleteButton = (props: {
         className="flex items-center gap-1 text-red-400 hover:underline"
       >
         Xóa
+      </button>
+    </>
+  );
+};
+export const DeleteDestroyButton = (props: { api: string; id: string }) => {
+  const { api, id } = props;
+  const handleDeleteDestroy = () => {
+    const confirm = window.confirm(
+      'Không thể khôi phục lại file khi thực hiện thao tác này'
+    );
+    if (confirm) {
+      fetch(api, {
+        method: 'DELETE',
+        credentials: 'include',
+      })
+        .then((res) => res.json())
+        .then((res) => {
+          if (res.success === true) {
+            toast.warning(res.message);
+          }
+          if (res.success === false) {
+            toast.error(res.message);
+          }
+        });
+    }
+  };
+
+  return (
+    <>
+      <button
+        onClick={handleDeleteDestroy}
+        className="flex items-center gap-1 text-red-400 hover:underline"
+      >
+        <Trash2 size={16} />
+        Xóa vĩnh viễn
       </button>
     </>
   );

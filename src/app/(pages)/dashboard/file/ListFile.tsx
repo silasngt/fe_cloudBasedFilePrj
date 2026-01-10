@@ -19,7 +19,7 @@ export const ListFile = () => {
           setListFile(res.data);
         }
       });
-  }, [listFile.length]);
+  });
   const handleRenameSuccess = (fileId: number, newName: string) => {
     setListFile((prev) =>
       prev.map((file) =>
