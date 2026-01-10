@@ -1,5 +1,6 @@
-import { ButtonDelete } from '@/app/components/button/ButtonDelete';
+import { DeleteButton } from '@/app/components/button/ButtonDelete';
 import { DownloadButton } from '@/app/components/button/ButtonDownload';
+import { ViewButton } from '@/app/components/button/ButtonView';
 import { formatFileSize, getFileTypeLabel } from '@/hooks/formatFile';
 import { Image, FileText, File, Download, Trash2 } from 'lucide-react';
 import moment from 'moment';
@@ -89,7 +90,12 @@ export const ItemFile = (props: {
             api={`${process.env.NEXT_PUBLIC_API_URL}/api/file/download/${file.id}`}
             id={file.id}
           />
-          <ButtonDelete
+          <ViewButton
+            api={`${process.env.NEXT_PUBLIC_API_URL}/api/file/view/${file.id}`}
+            mime_type={file.mime_type}
+            id={file.id}
+          />
+          <DeleteButton
             api={`${process.env.NEXT_PUBLIC_API_URL}/api/file/${file.id}`}
             id={file.id}
             onDeleteSuccess={onDeleteSuccess}

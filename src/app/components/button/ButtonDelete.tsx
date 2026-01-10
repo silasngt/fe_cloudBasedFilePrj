@@ -1,7 +1,7 @@
 import { on } from 'events';
 import Link from 'next/link';
 import { Toaster, toast } from 'sonner';
-export const ButtonDelete = (props: {
+export const DeleteButton = (props: {
   api: string;
   id: string;
   onDeleteSuccess: (id: string) => void;
