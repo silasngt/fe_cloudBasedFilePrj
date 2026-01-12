@@ -4,10 +4,12 @@ import { motion } from 'framer-motion';
 import { Cloud } from 'lucide-react';
 import Link from 'next/link';
 import { FormLogin } from './FormLogin';
+import { Toaster } from 'sonner';
 
 export default function LoginPage() {
   return (
     <>
+      <Toaster position="top-right" richColors closeButton />
       <div className="min-h-screen relative overflow-hidden bg-gradient-to-br from-[#0f172a] via-[#1e3a8a] to-[#0ea5e9] flex items-center justify-center">
         {/* glow background */}
         <div className="absolute w-[500px] h-[500px] bg-cyan-400/30 rounded-full blur-3xl top-[-100px] left-[-100px]" />

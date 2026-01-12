@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { Cloud, User, Mail, Lock, UserRoundPlus } from 'lucide-react';
 import Link from 'next/link';
 import { FormRegister } from './FormRegister';
+import { Toaster } from 'sonner';
 
 const container = {
   hidden: { opacity: 0 },
@@ -22,6 +23,7 @@ const item = {
 export default function RegisterPage() {
   return (
     <>
+      <Toaster position="top-right" richColors closeButton />
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#020617] via-[#1e3a8a] to-[#0ea5e9] relative overflow-hidden">
         {/* glow */}
         <div className="absolute w-[500px] h-[500px] bg-cyan-400/30 rounded-full blur-3xl -top-40 -left-40" />

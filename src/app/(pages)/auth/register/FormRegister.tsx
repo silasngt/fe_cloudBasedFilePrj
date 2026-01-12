@@ -4,6 +4,7 @@ import JustValidate from 'just-validate';
 import { Cloud, User, Mail, Lock, UserRoundPlus } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
+import { toast } from 'sonner';
 const container = {
   hidden: { opacity: 0 },
   visible: {
@@ -114,7 +115,8 @@ export const FormRegister = () => {
           .then((res) => res.json())
           .then((res: any) => {
             if (res.success === false) {
-              alert(res.message);
+              toast.error(res.message || 'Đăng ký thất bại!');
+              return;
             }
 
             if (res.success === true) {

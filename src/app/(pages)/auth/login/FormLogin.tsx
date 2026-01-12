@@ -4,6 +4,7 @@ import JustValidate from 'just-validate';
 import { Lock } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
+import { toast } from 'sonner';
 export const FormLogin = () => {
   const router = useRouter();
   useEffect(() => {
@@ -61,7 +62,8 @@ export const FormLogin = () => {
           .then((res) => {
             // console.log(res);
             if (res.success === false) {
-              alert(res.message);
+              toast.error(res.message);
+              return;
             }
 
             if (res.success === true) {

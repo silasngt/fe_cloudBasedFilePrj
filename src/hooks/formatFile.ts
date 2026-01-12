@@ -20,3 +20,6 @@ export const formatFileSize = (bytes: number) => {
   if (!bytes) return '0 MB';
   return `${(bytes / (1024 * 1024)).toFixed(2)} MB`;
 };
+export const formatGB = (bytes: number) => {
+  return (bytes / 1024 / 1024 / 1024).toFixed(2);
+};

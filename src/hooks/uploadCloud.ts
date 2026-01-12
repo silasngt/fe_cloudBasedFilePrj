@@ -7,8 +7,8 @@ export async function uploadWithPresignedUrl(
     type: string;
   }
 ) {
-  // loading toast
-  const toastId = toast.loading(`Đang upload ${file.name}...`);
+  // loading toast – xin presigned url
+  const toastId = toast.loading(`Đang xin quyền upload cho ${file.name}...`);
 
   try {
     // 1. Init upload
@@ -16,9 +16,7 @@ export async function uploadWithPresignedUrl(
       `${process.env.NEXT_PUBLIC_API_URL}/api/file/upload/init`,
       {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
         body: JSON.stringify({
           file_name: file.name,
@@ -42,6 +40,11 @@ export async function uploadWithPresignedUrl(
     }
 
     const { file_id, upload_url } = initResJson.data;
+
+    // update toast – upload lên cloud
+    toast.loading(`Đang upload ${file.name} lên Cloud...`, {
+      id: toastId,
+    });
 
     // 2. Upload lên S3
     const uploadRes = await fetch(upload_url, {
@@ -71,8 +74,8 @@ export async function uploadWithPresignedUrl(
       throw new Error('Không thể xác nhận upload');
     }
 
-    // success toast
-    toast.success(`Upload ${file.name} thành công `, {
+    // success
+    toast.success(`Upload ${file.name} thành công`, {
       id: toastId,
     });
 
@@ -80,7 +83,6 @@ export async function uploadWithPresignedUrl(
   } catch (err: any) {
     console.error(err);
 
-    // error toast
     toast.error(err?.message || `Upload ${file.name} thất bại`, {
       id: toastId,
     });
