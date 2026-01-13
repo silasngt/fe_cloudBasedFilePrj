@@ -6,10 +6,10 @@ import { Users, GraduationCap, Cloud, UserCheck } from 'lucide-react';
 
 const members = [
   { id: '2251120049', name: 'Nguyễn Giang Thành Tài' },
-  { id: '—', name: 'Võ Văn Phúc' },
-  { id: '—', name: 'Trịnh Thị Nghĩa' },
-  { id: '—', name: 'Đỗ Thị Ngọc Diễm' },
-  { id: '—', name: 'Trịnh Hồ Ngọc Trung Kiên' },
+  { id: '2251120103', name: 'Võ Văn Phúc' },
+  { id: '2251120098', name: 'Trịnh Thị Nghĩa' },
+  { id: '2251120069', name: 'Đỗ Thị Ngọc Diễm' },
+  { id: '2254030146', name: 'Trịnh Hồ Ngọc Trung Kiên' },
 ];
 export default function AboutPage() {
   return (

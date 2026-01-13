@@ -21,6 +21,7 @@ export const UploadFile = () => {
           maxFiles={5}
           acceptedFileTypes={[
             'image/*',
+            'video/*',
             'application/pdf',
             'application/msword',
             'application/vnd.ms-powerpoint',

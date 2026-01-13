@@ -6,6 +6,8 @@ export const getFileTypeLabel = (mimeType: string) => {
   switch (type) {
     case 'image':
       return 'Image';
+    case 'video':
+      return 'Video';
     case 'application':
       if (subtype === 'pdf') return 'PDF';
       if (subtype.includes('word')) return 'Word';
