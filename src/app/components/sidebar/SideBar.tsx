@@ -2,8 +2,8 @@
 import Link from 'next/link';
 import { Cloud, Folder, User, Settings, Trash2, LogOut } from 'lucide-react';
 import { usePathname, useRouter } from 'next/navigation';
-import { useAuth } from '@/hooks/useAuth';
-import { formatGB } from '@/hooks/formatFile';
+import { StorageUsage } from './StorageUsage';
+import { useEffect, useState } from 'react';
 
 const menus = [
   { label: 'Quản lý file', href: '/dashboard', icon: Folder },
@@ -13,7 +13,7 @@ const menus = [
 ];
 
 export default function Sidebar() {
-  const { infoUser } = useAuth();
+  const [infoUser, setInfoUser] = useState<any>(null);
   const pathname = usePathname();
   const route = useRouter();
 
@@ -41,17 +41,26 @@ export default function Sidebar() {
         }
       });
   };
-  // Storage usage example values
-  const usedStorage: any = infoUser?.used_storage
-    ? formatGB(infoUser.used_storage)
-    : 0; // GB
-  const totalStorage: any = infoUser?.storage_limit
-    ? formatGB(infoUser.storage_limit)
-    : 10; // GB
-  const percentUsed = Math.min(
-    Math.round((usedStorage / totalStorage) * 100),
-    100
-  );
+  useEffect(() => {
+    const fetchInfoUser = () => {
+      fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/accounts/profile`, {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+      })
+        .then((res) => res.json())
+        .then((res) => {
+          if (res.success === true) {
+            setInfoUser(res.data);
+          }
+        });
+    };
+
+    fetchInfoUser(); // gọi lần đầu
+    const interval = setInterval(fetchInfoUser, 5000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <>
@@ -112,27 +121,10 @@ export default function Sidebar() {
           })}
         </nav>
         {/* STORAGE USAGE */}
-        <div className="mt-auto pt-6 border-t border-white/10">
-          <p className="text-xs text-white/60 mb-2">Dung lượng sử dụng</p>
-
-          <div className="w-full h-2 rounded-full bg-white/10 overflow-hidden">
-            <div
-              className={`h-full transition-all ${
-                percentUsed < 70
-                  ? 'bg-cyan-400'
-                  : percentUsed < 90
-                  ? 'bg-yellow-400'
-                  : 'bg-red-400'
-              }`}
-              style={{ width: `${percentUsed}%` }}
-            />
-          </div>
-
-          <div className="flex justify-between text-xs text-white/60 mt-1">
-            <span>{usedStorage} GB</span>
-            <span>{totalStorage} GB</span>
-          </div>
-        </div>
+        <StorageUsage
+          usedStorage={infoUser?.used_storage}
+          limitStorage={infoUser?.storage_limit}
+        />
       </aside>
     </>
   );

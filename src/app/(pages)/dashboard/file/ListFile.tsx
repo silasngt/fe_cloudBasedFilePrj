@@ -5,21 +5,26 @@ import { ItemFile } from './ItemFile';
 export const ListFile = () => {
   const [listFile, setListFile] = useState<any[]>([]);
   useEffect(() => {
-    fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/file/list`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      credentials: 'include', // Giữ cookie
-    })
-      .then((res) => res.json())
-      .then((res) => {
-        // console.log(res);
-        if (res.success === true) {
-          setListFile(res.data);
-        }
-      });
-  });
+    const fetchFiles = () => {
+      fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/file/list`, {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+      })
+        .then((res) => res.json())
+        .then((res) => {
+          if (res.success === true) {
+            setListFile(res.data);
+          }
+        });
+    };
+
+    fetchFiles(); // gọi lần đầu
+    const interval = setInterval(fetchFiles, 10000);
+
+    return () => clearInterval(interval);
+  }, []);
+
   const handleRenameSuccess = (fileId: number, newName: string) => {
     setListFile((prev) =>
       prev.map((file) =>

@@ -13,6 +13,7 @@ export const PreviewModal = ({
 }) => {
   const isImage = mimeType.startsWith('image/');
   const isPDF = mimeType === 'application/pdf';
+  const isVideo = mimeType.startsWith('video/');
 
   return (
     <div className="fixed inset-0 z-50 bg-black/70 flex items-center justify-center">
@@ -36,8 +37,15 @@ export const PreviewModal = ({
           )}
 
           {isPDF && <iframe src={url} className="w-full h-full rounded-lg" />}
+          {isVideo && (
+            <video
+              src={url}
+              controls
+              className="max-h-full max-w-full rounded-lg"
+            />
+          )}
 
-          {!isImage && !isPDF && (
+          {!isImage && !isPDF && !isVideo && (
             <p className="text-white/60">Không hỗ trợ preview loại file này</p>
           )}
         </div>

@@ -11,12 +11,13 @@ import { formatGB } from '@/hooks/formatFile';
 import moment from 'moment';
 import JustValidate from 'just-validate';
 import { toast } from 'sonner';
+import { StorageUsage } from '@/app/components/sidebar/StorageUsage';
 
 // Đăng ký plugin
 registerPlugin(FilePondPluginFileValidateType, FilePondPluginImagePreview);
 export const FormProfile = () => {
-  const { infoUser } = useAuth();
   const [detailProfile, setDetailProfile] = useState<any>(null);
+  const [infoUser, setInfoUser] = useState<any>(null);
   const [avatars, setAvatars] = useState<any[]>([]);
 
   useEffect(() => {
@@ -49,7 +50,26 @@ export const FormProfile = () => {
       ]);
     }
   }, [detailProfile]);
+  useEffect(() => {
+    const fetchInfoUser = () => {
+      fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/accounts/profile`, {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+      })
+        .then((res) => res.json())
+        .then((res) => {
+          if (res.success === true) {
+            setInfoUser(res.data);
+          }
+        });
+    };
 
+    fetchInfoUser(); // gọi lần đầu
+    const interval = setInterval(fetchInfoUser, 5000);
+
+    return () => clearInterval(interval);
+  }, []);
   // Xử lý khi submit
   const handleSubmit = (event: any) => {
     event.preventDefault();
@@ -82,17 +102,6 @@ export const FormProfile = () => {
         }
       });
   };
-  // Storage usage example values
-  const usedStorage: any = infoUser?.used_storage
-    ? formatGB(infoUser.used_storage)
-    : 0; // GB
-  const totalStorage: any = infoUser?.storage_limit
-    ? formatGB(infoUser.storage_limit)
-    : 10; // GB
-  const percentUsed = Math.min(
-    Math.round((usedStorage / totalStorage) * 100),
-    100
-  );
   return (
     <>
       <form
@@ -175,28 +184,10 @@ export const FormProfile = () => {
           </div>
 
           <div className="mt-auto pt-6 border-t border-white/10 col-span-2">
-            <p className="text-xs text-white/60 mb-2">Dung lượng sử dụng</p>
-
-            <div className="w-full h-2 rounded-full bg-white/10 overflow-hidden">
-              <div
-                className={`h-full transition-all ${
-                  percentUsed < 70
-                    ? 'bg-cyan-400'
-                    : percentUsed < 90
-                    ? 'bg-yellow-400'
-                    : 'bg-red-400'
-                }`}
-                style={{ width: `${percentUsed}%` }}
-              />
-            </div>
-
-            <div className="flex justify-between text-xs text-white/60 mt-1">
-              <span>{usedStorage} GB</span>
-              <span>{totalStorage} GB</span>
-            </div>
-            <p className="text-[11px] text-white/40 mt-1">
-              {percentUsed}% dung lượng đã sử dụng
-            </p>
+            <StorageUsage
+              usedStorage={infoUser?.used_storage}
+              limitStorage={infoUser?.storage_limit}
+            />
           </div>
         </div>
         <button
