@@ -49,7 +49,7 @@ export const ListFile = () => {
           </div>
 
           {/* ROWS */}
-          <div className="flex-1 overflow-y-auto mt-2 space-y-2 pr-1">
+          <div className="flex-1 overflow-x-hidden overflow-y-visible">
             {listFile.map((file) => (
               <ItemFile
                 key={file.id}

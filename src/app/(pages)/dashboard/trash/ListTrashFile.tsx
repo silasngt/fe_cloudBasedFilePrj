@@ -5,31 +5,20 @@ import { ItemTrashFile } from './ItemTrashFile';
 export const ListTrashFile = () => {
   const [listTrashFile, setListTrashFile] = useState<any[]>([]);
   useEffect(() => {
-    const fetchTrashFiles = () => {
-      fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/file/trash`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        credentials: 'include', // Giữ cookie
-      })
-        .then((res) => res.json())
-        .then((res) => {
-          console.log(res);
-          if (res.success === true) {
-            setListTrashFile(res.data);
-          }
-          if (res.success === false) {
-            setListTrashFile([]);
-            toast.error(res.message);
-          }
-        });
-
-      fetchTrashFiles(); // gọi lần đầu
-      const interval = setInterval(fetchTrashFiles, 10000);
-
-      return () => clearInterval(interval);
-    };
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/file/trash`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include', // Giữ cookie
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        console.log(res);
+        if (res.success === true) {
+          setListTrashFile(res.data);
+        }
+      });
   }, []);
   const handleRestoreSuccess = (restoreId: string) => {
     setListTrashFile((prev) => prev.filter((file) => file.id !== restoreId));

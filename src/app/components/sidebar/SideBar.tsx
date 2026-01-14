@@ -16,7 +16,26 @@ export default function Sidebar() {
   const [infoUser, setInfoUser] = useState<any>(null);
   const pathname = usePathname();
   const route = useRouter();
+  useEffect(() => {
+    const fetchInfoUser = () => {
+      fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/accounts/profile`, {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+      })
+        .then((res) => res.json())
+        .then((res) => {
+          if (res.success === true) {
+            setInfoUser(res.data);
+          }
+        });
+    };
 
+    fetchInfoUser(); // gọi lần đầu
+    const interval = setInterval(fetchInfoUser, 5000);
+
+    return () => clearInterval(interval);
+  }, []);
   const handleLogout = (linkRedirect: string) => {
     const refreshToken = cookieStore.get('refresh_token');
 
@@ -41,26 +60,6 @@ export default function Sidebar() {
         }
       });
   };
-  useEffect(() => {
-    const fetchInfoUser = () => {
-      fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/accounts/profile`, {
-        method: 'GET',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
-      })
-        .then((res) => res.json())
-        .then((res) => {
-          if (res.success === true) {
-            setInfoUser(res.data);
-          }
-        });
-    };
-
-    fetchInfoUser(); // gọi lần đầu
-    const interval = setInterval(fetchInfoUser, 5000);
-
-    return () => clearInterval(interval);
-  }, []);
 
   return (
     <>
