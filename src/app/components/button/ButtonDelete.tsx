@@ -37,8 +37,13 @@ export const DeleteButton = (props: {
     </>
   );
 };
-export const DeleteDestroyButton = (props: { api: string; id: string }) => {
-  const { api, id } = props;
+export const DeleteDestroyButton = (props: {
+  api: string;
+  id: string;
+  onDeleteSuccess: (id: string) => void;
+  onSuccessCallback?: () => void;
+}) => {
+  const { api, id, onDeleteSuccess, onSuccessCallback } = props;
   const handleDeleteDestroy = () => {
     const confirm = window.confirm(
       'Không thể khôi phục lại file khi thực hiện thao tác này'
@@ -50,8 +55,13 @@ export const DeleteDestroyButton = (props: { api: string; id: string }) => {
       })
         .then((res) => res.json())
         .then((res) => {
+          // console.log(res);
           if (res.success === true) {
             toast.warning(res.message);
+            onDeleteSuccess(id);
+            if (onSuccessCallback) {
+              onSuccessCallback();
+            }
           }
           if (res.success === false) {
             toast.error(res.message);

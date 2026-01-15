@@ -3,7 +3,8 @@ import Link from 'next/link';
 import { Cloud, Folder, User, Settings, Trash2, LogOut } from 'lucide-react';
 import { usePathname, useRouter } from 'next/navigation';
 import { StorageUsage } from './StorageUsage';
-import { useEffect, useState } from 'react';
+import { use, useEffect, useState } from 'react';
+import { fetchInfoUser } from '@/api/user.api';
 
 const menus = [
   { label: 'Quản lý file', href: '/dashboard', icon: Folder },
@@ -12,30 +13,12 @@ const menus = [
   { label: 'Thùng rác', href: '/dashboard/trash', icon: Trash2 },
 ];
 
-export default function Sidebar() {
-  const [infoUser, setInfoUser] = useState<any>(null);
+export default function Sidebar(props: { infoUser: any }) {
   const pathname = usePathname();
   const route = useRouter();
-  useEffect(() => {
-    const fetchInfoUser = () => {
-      fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/accounts/profile`, {
-        method: 'GET',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
-      })
-        .then((res) => res.json())
-        .then((res) => {
-          if (res.success === true) {
-            setInfoUser(res.data);
-          }
-        });
-    };
+  const { infoUser } = props;
+  // console.log('Sidebar', infoUser);
 
-    fetchInfoUser(); // gọi lần đầu
-    const interval = setInterval(fetchInfoUser, 5000);
-
-    return () => clearInterval(interval);
-  }, []);
   const handleLogout = (linkRedirect: string) => {
     const refreshToken = cookieStore.get('refresh_token');
 

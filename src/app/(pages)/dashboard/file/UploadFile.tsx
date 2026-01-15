@@ -1,14 +1,20 @@
 'use client';
 import { FilePond, registerPlugin } from 'react-filepond';
 import FilePondPluginImagePreview from 'filepond-plugin-image-preview';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 
 import 'filepond/dist/filepond.min.css';
 import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css';
-import { uploadWithPresignedUrl } from '@/hooks/uploadCloud';
+import { uploadWithPresignedUrl } from '@/helpers/uploadCloud';
+import { DashboardContext } from '../layout';
 registerPlugin(FilePondPluginImagePreview);
-export const UploadFile = () => {
+export const UploadFile = (props: {
+  refreshFileList: () => void | Promise<void>;
+}) => {
+  const { refreshProfile } = useContext(DashboardContext)!; // chắc chắn không null
   const [uploadFiles, setUploadFiles] = useState<any[]>([]);
+  const { refreshFileList } = props;
+
   return (
     <>
       <div className="shrink-0 bg-white/10 backdrop-blur-xl border border-white/20 rounded-xl p-5">
@@ -45,6 +51,8 @@ export const UploadFile = () => {
 
                 load(file.name); // báo FilePond thành công
                 setUploadFiles([]); // clear file khỏi UI
+                refreshFileList(); // refresh lại danh sách file hiển thị trên
+                refreshProfile(); // refresh lại thông tin user (dung lượng đã sử dụng)
               } catch (err) {
                 error('Upload thất bại');
               }

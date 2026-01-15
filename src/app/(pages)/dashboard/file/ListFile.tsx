@@ -1,40 +1,15 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { ItemFile } from './ItemFile';
+import { fetchFiles } from '@/api/files.api';
 
-export const ListFile = () => {
-  const [listFile, setListFile] = useState<any[]>([]);
-  useEffect(() => {
-    const fetchFiles = () => {
-      fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/file/list`, {
-        method: 'GET',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
-      })
-        .then((res) => res.json())
-        .then((res) => {
-          if (res.success === true) {
-            setListFile(res.data);
-          }
-        });
-    };
+export const ListFile = (props: {
+  listFile: any;
+  handleRenameSuccess: any;
+  handleDeleteSuccess: any;
+}) => {
+  const { listFile, handleRenameSuccess, handleDeleteSuccess } = props;
 
-    fetchFiles(); // gọi lần đầu
-    const interval = setInterval(fetchFiles, 10000);
-
-    return () => clearInterval(interval);
-  }, []);
-
-  const handleRenameSuccess = (fileId: number, newName: string) => {
-    setListFile((prev) =>
-      prev.map((file) =>
-        file.id === fileId ? { ...file, file_name: newName } : file
-      )
-    );
-  };
-  const handleDeleteSuccess = (deleteid: string) => {
-    setListFile((prev) => prev.filter((file) => file.id !== deleteid));
-  };
   return (
     <>
       <div className="flex-1 bg-white/10 backdrop-blur-xl border border-white/20 rounded-xl p-4 overflow-hidden">
@@ -50,7 +25,7 @@ export const ListFile = () => {
 
           {/* ROWS */}
           <div className="flex-1 overflow-x-hidden overflow-y-visible">
-            {listFile.map((file) => (
+            {listFile.map((file: any) => (
               <ItemFile
                 key={file.id}
                 file={file}

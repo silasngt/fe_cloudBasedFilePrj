@@ -1,7 +1,20 @@
+'use client';
 import { Toaster } from 'sonner';
 import { ListTrashFile } from './ListTrashFile';
+import { useEffect, useState } from 'react';
+import { fetchTrashFiles } from '@/api/files.api';
 
 export default function TrashPage() {
+  const [listTrashFile, setListTrashFile] = useState<any[]>([]);
+  useEffect(() => {
+    fetchTrashFiles().then(setListTrashFile);
+  }, []);
+  const handleRestoreSuccess = (restoreId: string) => {
+    setListTrashFile((prev) => prev.filter((file) => file.id !== restoreId));
+  };
+  const handleDeleteSuccess = (deleteId: string) => {
+    setListTrashFile((prev) => prev.filter((file) => file.id !== deleteId));
+  };
   return (
     <>
       <Toaster richColors position="top-right" closeButton />
@@ -17,7 +30,11 @@ export default function TrashPage() {
         </div>
 
         {/* Rows */}
-        <ListTrashFile />
+        <ListTrashFile
+          listTrashFile={listTrashFile}
+          handleRestoreSuccess={handleRestoreSuccess}
+          handleDeleteSuccess={handleDeleteSuccess}
+        />
       </div>
     </>
   );

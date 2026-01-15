@@ -1,4 +1,4 @@
-import { formatGB } from '@/hooks/formatFile';
+import { formatGB } from '@/utils/formatFile';
 
 export const StorageUsage = (props: {
   usedStorage: number;

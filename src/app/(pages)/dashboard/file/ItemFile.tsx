@@ -1,8 +1,10 @@
+import { fetchFileDetail, fetchFiles } from '@/api/files.api';
 import { DeleteButton } from '@/app/components/button/ButtonDelete';
 import { DownloadButton } from '@/app/components/button/ButtonDownload';
 import { ViewButton } from '@/app/components/button/ButtonView';
-import { formatFileSize, getFileTypeLabel } from '@/hooks/formatFile';
-import { Image, FileText, File, Download, Trash2 } from 'lucide-react';
+import { formatFileSize, getFileTypeLabel } from '@/utils/formatFile';
+import { on } from 'events';
+import { Image, FileText, File } from 'lucide-react';
 import moment from 'moment';
 import { useState } from 'react';
 import { toast } from 'sonner';
@@ -28,21 +30,14 @@ export const ItemFile = (props: {
     }
 
     setLoading(true);
-    fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/file/rename/${file.id}`, {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ new_name: newName }),
-      credentials: 'include',
-    })
-      .then((res) => res.json())
-      .then(async (res) => {
-        // console.log(res);
-        if (res.success === true) {
+    fetchFileDetail(file.id, newName)
+      .then((data) => {
+        if (data) {
           toast.success('Đổi tên file thành công');
-          onRenameSuccess(file.id, newName); // update local object
-          setIsEditing(false);
+          onRenameSuccess(file.id, newName);
+        } else {
+          toast.error('Đổi tên file thất bại');
+          setNewName(file.file_name); // rollback
         }
       })
       .catch(() => {

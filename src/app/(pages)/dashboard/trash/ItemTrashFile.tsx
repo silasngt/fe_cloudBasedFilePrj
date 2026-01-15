@@ -1,14 +1,18 @@
 import { DeleteDestroyButton } from '@/app/components/button/ButtonDelete';
 import { RestoreButton } from '@/app/components/button/ButtonRestore';
-import { getFileTypeLabel } from '@/hooks/formatFile';
+import { getFileTypeLabel } from '@/utils/formatFile';
 import { Trash2 } from 'lucide-react';
 import moment from 'moment';
+import { DashboardContext } from '../layout';
+import { useContext } from 'react';
 
 export const ItemTrashFile = (props: {
   fileTrash: any;
   onRestoreSuccess: (id: string) => void;
+  onDeleteSuccess: (id: string) => void;
 }) => {
-  const { fileTrash, onRestoreSuccess } = props;
+  const { refreshProfile } = useContext(DashboardContext)!;
+  const { fileTrash, onRestoreSuccess, onDeleteSuccess } = props;
   return (
     <>
       <div
@@ -39,6 +43,8 @@ export const ItemTrashFile = (props: {
           <DeleteDestroyButton
             api={`${process.env.NEXT_PUBLIC_API_URL}/api/file/permanent/${fileTrash.id}`}
             id={fileTrash.id}
+            onDeleteSuccess={onDeleteSuccess}
+            onSuccessCallback={() => refreshProfile()}
           />
         </div>
       </div>

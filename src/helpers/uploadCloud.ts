@@ -1,3 +1,4 @@
+import { fetchFiles } from '@/api/files.api';
 import { toast } from 'sonner';
 
 export async function uploadWithPresignedUrl(

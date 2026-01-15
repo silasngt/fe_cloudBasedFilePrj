@@ -1,5 +1,4 @@
 'use client';
-import { useAuth } from '@/hooks/useAuth';
 import { Mail, User, Calendar, UserCircle } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { FilePond, registerPlugin } from 'react-filepond';
@@ -7,11 +6,11 @@ import 'filepond/dist/filepond.min.css';
 import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type';
 import FilePondPluginImagePreview from 'filepond-plugin-image-preview';
 import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css';
-import { formatGB } from '@/hooks/formatFile';
 import moment from 'moment';
 import JustValidate from 'just-validate';
 import { toast } from 'sonner';
 import { StorageUsage } from '@/app/components/sidebar/StorageUsage';
+import { fetchInfoUser, updateInfoUser } from '@/api/user.api';
 
 // Đăng ký plugin
 registerPlugin(FilePondPluginFileValidateType, FilePondPluginImagePreview);
@@ -51,24 +50,9 @@ export const FormProfile = () => {
     }
   }, [detailProfile]);
   useEffect(() => {
-    const fetchInfoUser = () => {
-      fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/accounts/profile`, {
-        method: 'GET',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
-      })
-        .then((res) => res.json())
-        .then((res) => {
-          if (res.success === true) {
-            setInfoUser(res.data);
-          }
-        });
-    };
-
-    fetchInfoUser(); // gọi lần đầu
-    const interval = setInterval(fetchInfoUser, 5000);
-
-    return () => clearInterval(interval);
+    fetchInfoUser().then((data) => {
+      setInfoUser(data);
+    });
   }, []);
   // Xử lý khi submit
   const handleSubmit = (event: any) => {
@@ -85,21 +69,17 @@ export const FormProfile = () => {
     formData.append('full_name', fullName);
     formData.append('avatar_file', avatar);
 
-    fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/accounts/update`, {
-      method: 'POST',
-      body: formData,
-      credentials: 'include', // Gửi kèm cookie
-    })
-      .then((res) => res.json())
-      .then((res) => {
-        console.log(res);
-        if (res.success === false) {
-          toast.error(res.message);
+    updateInfoUser({ formData })
+      .then((data) => {
+        if (data) {
+          toast.success('Cập nhật thông tin thành công!');
+          setDetailProfile(data);
+        } else {
+          toast.error('Cập nhật thông tin thất bại!');
         }
-        if (res.success === true) {
-          toast.success(res.message);
-          setDetailProfile(res.data);
-        }
+      })
+      .catch(() => {
+        toast.error('Đã có lỗi xảy ra. Vui lòng thử lại!');
       });
   };
   return (
