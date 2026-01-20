@@ -14,8 +14,8 @@ export const ListFile = (props: {
     <>
       <div className="flex-1 bg-white/10 backdrop-blur-xl border border-white/20 rounded-xl p-4 overflow-hidden">
         <div className="flex flex-col h-full">
-          {/* HEADER */}
-          <div className="grid grid-cols-[2fr_1fr_1fr_1fr_1.5fr] text-white/60 text-sm px-2 pb-2 border-b border-white/10 shrink-0">
+          {/* HEADER – chỉ hiện trên desktop */}
+          <div className="hidden md:grid grid-cols-[2fr_1fr_1fr_1fr_1.5fr] text-white/60 text-sm px-2 pb-2 border-b border-white/10 shrink-0">
             <div>Tên file</div>
             <div>Loại</div>
             <div>Dung lượng</div>
@@ -24,7 +24,7 @@ export const ListFile = (props: {
           </div>
 
           {/* ROWS */}
-          <div className="flex-1 overflow-x-hidden overflow-y-visible">
+          <div className="flex flex-col gap-2 mt-2 overflow-y-auto">
             {listFile.map((file: any) => (
               <ItemFile
                 key={file.id}

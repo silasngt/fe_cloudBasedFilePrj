@@ -51,9 +51,9 @@ export const ItemFile = (props: {
 
   return (
     <>
-      <div className="grid grid-cols-[2fr_1fr_1fr_1fr_1.5fr] items-center px-3 py-3 bg-white/5 hover:bg-white/10 transition rounded-lg">
+      <div className="grid grid-cols-1 md:grid-cols-[2fr_1fr_1fr_1fr_1.5fr] gap-2 md:gap-4 items-center p-3 rounded-lg hover:bg-white/5 transition">
         {/* FILE NAME */}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 min-w-0 text-white">
           <FileIcon type={file.mime_type} />
 
           {isEditing ? (
@@ -68,7 +68,7 @@ export const ItemFile = (props: {
             />
           ) : (
             <span
-              className="cursor-pointer hover:underline"
+              className="cursor-pointer hover:underline truncate"
               onClick={() => setIsEditing(true)}
             >
               {file.file_name}
@@ -76,11 +76,22 @@ export const ItemFile = (props: {
           )}
         </div>
 
-        <div>{getFileTypeLabel(file.mime_type)}</div>
-        <div>{formatFileSize(file.file_size)}</div>
-        <div>{moment(file.updated_at).locale('vi').format('DD/MM/YYYY')}</div>
+        <div className="text-white/70 md:text-white">
+          <span className="md:hidden text-white/40 mr-1">Loại:</span>
+          {getFileTypeLabel(file.mime_type)}
+        </div>
 
-        <div className="flex gap-4">
+        <div className="text-white/70 md:text-white">
+          <span className="md:hidden text-white/40 mr-1">Dung lượng:</span>
+          {formatFileSize(file.file_size)}
+        </div>
+
+        <div className="text-white/70 md:text-white">
+          <span className="md:hidden text-white/40 mr-1">Ngày:</span>
+          {moment(file.updated_at).locale('vi').format('DD/MM/YYYY')}
+        </div>
+
+        <div className="flex flex-wrap gap-2 justify-start md:justify-end shrink-0">
           <DownloadButton
             api={`${process.env.NEXT_PUBLIC_API_URL}/api/file/download/${file.id}`}
             id={file.id}
