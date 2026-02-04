@@ -250,11 +250,10 @@ Dự án này giúp thực hành các khái niệm quan trọng:
 ### Upload thông minh
 - Multi-file upload (tối đa 5 files)
 - Progress tracking real-time
-- Preview trước khi upload
 - Validation file type & size
 
 ### Quản lý file
-- Danh sách file với pagination
+- Danh sách file 
 - Search & filter
 - Rename file
 - Soft delete (thùng rác)
@@ -284,16 +283,6 @@ Dự án này giúp thực hành các khái niệm quan trọng:
 
 ---
 
-## 📸 Screenshots
-
-_(Thêm screenshots của ứng dụng tại đây)_
-
-- Dashboard
-- File upload interface
-- File preview
-- User profile
-
----
 
 ## 🚧 Roadmap
 
