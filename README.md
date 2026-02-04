@@ -112,7 +112,7 @@ fe_cloudbasedfilerj/
 
 ### 1️⃣ Clone repository
 ```bash
-git clone https://github.com/your-username/cloud-based-fe.git
+git clone https://github.com/silasngt/fe_cloudBasedFilePrj.git
 cd fe_cloudbasedfilerj
 ```
 
